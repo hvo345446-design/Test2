@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- lang="en" là ngôn ngữ cho trang web-->
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Định dạng ký tự UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Thiết lập viewport cho thiết bị di động -->
+    <title>Máy tính</title>
+    <!-- Tiêu đề của trang web -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Liên kết đến tệp CSS để định dạng trang web -->
+</head>
+
+<body>
+    <div id="Casio">
+        <!-- Nội dung máy tính sẽ được thêm vào đây -->
+        <input id="display" readonly>
+        <!-- Hiển thị kết quả và phép tính -->
+        <div id="keys">
+            <!-- Các phím máy tính sẽ được thêm vào đây -->
+            <button onclick="appendToDisplay('+')">+</button>
+            <!-- appendToDisplay là 1 hàm JavaScript -->
+            <button onclick="appendToDisplay('7')">7</button>
+            <!-- Khi nhấn nút 7, hàm appendToDisplay sẽ được gọi với đối số '7' -->
+            <button onclick="appendToDisplay('8')">8</button>
+            <!-- button là phần tử HTML đại diện cho một nút bấm trên máy tính theo hàng ngang -->
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('-')">-</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('*')">*</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('/')">/</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="calculateResult()">=</button>
+            <!-- Khi nhấn nút =, hàm calculateResult sẽ được gọi để tính toán kết quả -->
+            <button onclick="clearDisplay()">C</button>
+            <!-- Khi nhấn nút C, hàm clearDisplay sẽ được gọi để xóa nội dung hiển thị -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <!-- Liên kết đến tệp JavaScript để xử lý logic của máy tính -->
+</body>
+
+</html>

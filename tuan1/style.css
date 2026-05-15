@@ -1,0 +1,63 @@
+            button {
+                width: 100px;
+                /* Đặt chiều rộng của nút là 100px */
+                height: 50px;
+                /* Đặt chiều cao của nút là 50px */
+                border-radius: 50px;
+                /* Đặt border-radius để tạo hình tròn cho nút */
+                border: none;
+                /* Loại bỏ đường viền mặc định của nút */
+                background-color: hsl(0, 0%, 4%);
+                /* Đặt màu nền của nút là màu đen */
+                color: white;
+                /* Đặt màu chữ của nút là màu trắng */
+                font-size: 3rem;
+                /* Đặt kích thước chữ của nút là 3rem */
+                font-weight: bold;
+                /* Đặt độ đậm của chữ là bold */
+                cursor: pointer;
+                /* Thay đổi con trỏ chuột khi hover vào nút */
+            }
+            
+            #keys {
+                display: grid;
+                /* Sử dụng grid layout để bố trí các phần tử con */
+                grid-template-columns: repeat(4, 1fr);
+                /* Chia thành 4  cột có kích thước bằng nhau, grid-template-columns là thuộc tính của grid layout,repeat(4, 1fr) là để lặp lại 4 lần với kích thước 1fr */
+                gap: 10px;
+                /* Đặt khoảng cách giữa các phần tử con là 10px */
+                padding: 25px;
+                /* padding là khoảng cách giữa cạnh ngoài của phần tử và nội dung bên trong */
+            }
+            
+            #Casio {
+                font-family: Arial, sans-serif;
+                /* Đặt font chữ cho phần tử có id là calculator là Arial, sans-serif, Arial, sans-serif */
+                /* sans-serif là một loại font chữ không có chân, thường được sử dụng để tạo cảm giác hiện đại và dễ đọc */
+                /* font-family là thuộc tính CSS để xác định kiểu chữ cho phần tử, nó có thể nhận nhiều giá trị khác nhau, trong đó có thể sử dụng tên font chữ cụ thể hoặc các loại font chữ chung như serif, sans-serif, monospace, v.v. */
+                /*Arial là một loại font chữ phổ biến, thường được sử dụng trong thiết kế web và văn bản, nó có kiểu dáng đơn giản và dễ đọc, phù hợp cho nhiều loại nội dung khác nhau. */
+                background-color: hsl(0, 0%, 40%);
+                border-radius: 15px;
+                /* Đặt border-radius để tạo góc bo cho phần tử có id là Casio */
+                max-width: 500px;
+                /* Đặt chiều rộng tối đa của phần tử có id là Casio là 500px */
+                overflow: hidden;
+                /* Ẩn phần nội dung vượt quá kích thước của phần tử có id là Casio */
+            }
+            
+            #display {
+                width: 100%;
+                /* Đặt chiều rộng của phần tử có id là Display là 100% */
+                padding: 20px;
+                /* Đặt padding cho phần tử có id là Display là 20px (độ rộng) */
+                font-size: 5rem;
+                /* Đặt kích thước chữ của phần tử có id là Display là 5rem */
+                text-align: left;
+                /* Căn chỉnh văn bản bên trái cho phần tử có id là Display */
+                border: none;
+                /* Loại bỏ đường viền mặc định của phần tử có id là Display */
+                background-color: hsl(0, 0%, 60%);
+                /* Đặt màu nền của phần tử có id là Display là màu xám */
+                color: white;
+                /* Đặt màu chữ của phần tử có id là Display là màu trắng */
+            }
