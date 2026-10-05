@@ -45,7 +45,6 @@ Tạo kịch bản `make_synthetic_fingerprint.py` mô phỏng vân xoáy đồn
   ```powershell
   python make_synthetic_fingerprint.py
 
-```
 
 * Minh chứng kết quả: Sinh thành công 80 ảnh tại thư mục `data/synthetic_fp/` và tệp đáp án chuẩn `minutiae_truth.json`.
 
