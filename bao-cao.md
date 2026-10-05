@@ -45,7 +45,6 @@ Tạo kịch bản `make_synthetic_fingerprint.py` mô phỏng vân xoáy đồn
   ```powershell
   python make_synthetic_fingerprint.py
 
-
 * Minh chứng kết quả: Sinh thành công 80 ảnh tại thư mục `data/synthetic_fp/` và tệp đáp án chuẩn `minutiae_truth.json`.
 
 ### 4.2. Khâu tăng cường ảnh và chuẩn hóa tọa độ
@@ -60,8 +59,6 @@ Cài đặt hàm `compute_crossing_number(skel_img)` quét lân cận 3x3 theo v
 * Điểm trên thân vân liền: $CN = 2$.
 * Điểm kết thúc vân (Ending): $CN = 1$.
 * Điểm rẽ nhánh (Bifurcation): $CN = 3$.
-
-
 
 ### 4.4. Khâu loại bỏ minutiae giả (TODO 2)
 
@@ -79,15 +76,12 @@ python th02_minutiae.py -data data/synthetic_fp -truth data/synthetic_fp/minutia
 
 ```
 
-
 * Kết quả terminal:
 ```text
 Hoàn tất xử lý!
 8 ảnh đầu -> Precision TB: 1.0000, Recall TB: 1.0000
 
 ```
-
-
 
 ### 4.7. Chạy trên ảnh FVC2004 DB1 set B
 
@@ -96,7 +90,6 @@ Hoàn tất xử lý!
 python th02_minutiae.py -data ../du-lieu/fvc2004/DB1_B -limit 8
 
 ```
-
 
 * Kết quả: Chương trình ghi nhận số lượng minutiae ổn định trên cả 8 ảnh thực tế đầu tiên.
 
@@ -151,8 +144,6 @@ python th02_minutiae.py -data ../du-lieu/fvc2004/DB1_B -limit 8
 1. *Cơ chế đứt vân:* Các điểm ảnh bị nhiễu đè tối/sáng bất thường làm đứt quãng đường vân lồi, biến 1 đoạn vân liền ($CN=2$) thành 2 điểm kết thúc đối diện ($CN=1$).
 2. *Cơ chế gai vân (spurs):* Các đốm nhiễu dính sát thân vân tạo thành các nhánh gai nhọn nhô ra, sinh ra điểm rẽ nhánh giả ($CN=3$).
 Hàng loạt minutiae giả xuất hiện khiến FP tăng vọt trước khi cấu trúc vân thật bị xóa nhòa hoàn toàn, làm Precision suy giảm trước.
-
-
 
 ### 3. Ảnh SOCOFing chỉ khoảng 96x103 điểm ảnh, trong khi bộ lọc Gabor của thư viện được chỉnh cho bước sóng vân từ 5 đến 15 điểm ảnh. Điều gì xảy ra nếu đưa ảnh nhỏ vào mà không phóng to? Kiểm chứng bằng một ảnh tổng hợp thu nhỏ 3 lần.
 
