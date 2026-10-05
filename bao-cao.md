@@ -143,8 +143,7 @@ python th02_minutiae.py -data ../du-lieu/fvc2004/DB1_B -limit 8
 
 * **Hiện tượng:** Trước khi lọc, bộ trích xuất phát hiện hàng loạt điểm đặc trưng dư thừa khiến Precision thấp (thường < 0.50). Sau khi lọc, Precision tăng mạnh lên tiệm cận 1.0 trong khi Recall gần như không đổi.
 * **Cơ chế & Vị trí:** Các minutiae bị loại chủ yếu tập trung tại **đường biên viền của vùng tiếp xúc vân tay (ROI boundary)** và **các vết đứt gãy ngắn do nhiễu hạt**. Tại mép ảnh, các đường vân liên tục bị cắt cụt đột ngột, làm xuất hiện một điểm kết thúc giả (spurious ridge ending) tại mỗi đầu vân bị đứt.
-* **Bằng chứng:** Hàm `filter_boundary_minutiae` sử dụng `distanceTransform` với ngưỡng đệm 14 pixel đã gạt bỏ toàn bộ vành ngoài này. Nhờ đó, số lượng dương tính giả (FP) giảm mạnh làm mẫu số của Precision ($TP / (TP + FP)$) thu nhỏ đáng kể, trong khi các điểm thật ở trung tâm không bị ảnh hưởng, giữ cho Recall ($TP / (TP + FN)$) ổn định.
-
+* **Bằng chứng:** Hàm `filter_boundary_minutiae` sử dụng `distanceTransform` với ngưỡng đệm 14 pixel đã gạt bỏ toàn bộ vành ngoài này. Nhờ đó, số lượng dương tính giả (FP) giảm mạnh làm mẫu số của Precision ($\text{Precision} = \frac{\text{TP}}{\text{TP} + \text{FP}}$) thu nhỏ đáng kể, trong khi các điểm thật ở trung tâm không bị ảnh hưởng, giữ cho Recall ($\text{Recall} = \frac{\text{TP}}{\text{TP} + \text{FN}}$) ổn định.
 ### 2. Khi tăng độ lệch chuẩn nhiễu thêm vào, chỉ số nào giảm trước, precision hay recall? Giải thích bằng cơ chế đứt vân và gai vân trên ảnh xương.
 
 * **Hiện tượng:** Khi tăng dần độ lệch chuẩn nhiễu $\sigma$ từ 0 lên 30 (bảng 5.2), **Precision là chỉ số giảm trước và giảm dốc hơn Recall** (ở $\sigma=20$, Precision giảm xuống 0.8889 trong khi Recall vẫn giữ nguyên 1.0000).
