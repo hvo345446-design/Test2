@@ -5,10 +5,9 @@
 ### 1.1. Hiện trạng và vị trí trong mã nguồn MiniShop gốc
 - Trong tệp `db.py`, hàm băm mật khẩu được cài đặt như sau:
 ```python
-  def hash_password(password):
-      """Bam mat khau thanh chuoi thap luc phan."""
-      return hashlib.md5(password.encode("utf-8")).hexdigest()
-
+def hash_password(password):
+    """Bam mat khau thanh chuoi thap luc phan."""
+    return hashlib.md5(password.encode("utf-8")).hexdigest()
 ```
 
 * **Lỗ hổng:** Mật khẩu được băm bằng thuật toán MD5 thuần (không có muối). Thuật toán MD5 có chi phí tính toán cực kỳ thấp và không có độ trễ, khiến hệ thống dễ bị tấn công duyệt trước bằng bảng cầu vồng (Rainbow Table) hoặc tấn công vét cạn (Brute-force) bằng GPU/ASIC.
@@ -43,7 +42,6 @@
 def _sign(sid):
     """Ky ma phien de gan vao cookie."""
     return hashlib.md5((SESSION_KEY + sid).encode("utf-8")).hexdigest()
-
 ```
 
 
@@ -79,8 +77,7 @@ def _new_session_id():
     global _next_sid
     _next_sid += 1
     return str(_next_sid)
-
- ```
+```
 
 
 * **Lỗ hổng:** Mã phiên là số nguyên tự tăng dần (`1`, `2`, `3`...). Do tính chất hoàn toàn có thể đoán trước (predictable), kẻ tấn công chỉ cần quan sát mã phiên của mình là có thể suy đoán chính xác mã phiên của các người dùng đăng nhập trước hoặc sau để chiếm đoạt phiên (Session Hijacking).
