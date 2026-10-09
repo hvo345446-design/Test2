@@ -71,7 +71,7 @@ def _sign(sid):
 ### 3.1. Hiện trạng và vị trí trong mã nguồn MiniShop gốc
 
 * Trong tệp `app.py`, việc cấp phát mã phiên được thực hiện qua hàm:
- ``python
+```python
 _next_sid = 0
 
 def _new_session_id():
@@ -80,7 +80,7 @@ def _new_session_id():
     _next_sid += 1
     return str(_next_sid)
 
- ``
+ ```
 
 
 * **Lỗ hổng:** Mã phiên là số nguyên tự tăng dần (`1`, `2`, `3`...). Do tính chất hoàn toàn có thể đoán trước (predictable), kẻ tấn công chỉ cần quan sát mã phiên của mình là có thể suy đoán chính xác mã phiên của các người dùng đăng nhập trước hoặc sau để chiếm đoạt phiên (Session Hijacking).
