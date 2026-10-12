@@ -145,10 +145,6 @@ python th04_verify.py --source lfw --n-pairs 300
 
 * **Nhận xét:** Đã đánh giá thành công đủ 7 cấu hình. Dữ liệu bảng kết quả và biểu đồ DET được khởi tạo chuẩn xác trong thư mục `lab04/ket-qua/`.
 
-```
-
-```
-
 ## 5. Kết quả định lượng
 
 <!-- Bảng và hình có số thứ tự và chú thích. Ghi công thức, ngưỡng, cỡ mẫu. Số liệu lấy từ tệp
