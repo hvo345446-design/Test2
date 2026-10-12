@@ -215,25 +215,28 @@ CSV trong ket-qua/ do chương trình ghi ra, không chép tay. -->
 <!-- 3 đến 6 câu: thay đổi em vừa đo có lợi hay hại cho ai, kẻ tấn công hay người dùng hợp lệ;
 nếu triển khai thật thì chọn cấu hình nào, vì sao. -->
 
-{ý nghĩa}
+Kết quả thực nghiệm cho thấy việc lựa chọn bộ phát hiện khuôn mặt và thuật toán trích xuất đặc trưng có ảnh hưởng trực tiếp đến sự cân bằng giữa tính an toàn (giảm tỷ lệ nhận nhầm FMR) và tính tiện dụng (giảm tỷ lệ bỏ sót FNMR và lỗi FTA). Việc chuyển đổi sang bộ phát hiện học sâu như RetinaFace hay MTCNN giúp loại bỏ hoàn toàn rủi ro FTA (từ 17 ảnh bị từ chối xuống 0 ảnh), mang lại lợi ích lớn cho người dùng hợp lệ khi giảm thiểu tối đa tình trạng bị hệ thống từ chối truy cập vô lý. Ngược lại, việc sử dụng các bộ phát hiện truyền thống như OpenCV làm gia tăng điểm yếu vận hành khi kẻ tấn công có thể lợi dụng các góc chụp nghiêng hoặc điều kiện ánh sáng khó để gây nghẽn dịch vụ (Denial of Service). Nếu triển khai trong hệ thống thực tế (như xác thực giao dịch ngân hàng hoặc kiểm soát ra vào cơ quan), cấu hình **`Facenet512 + RetinaFace (không căn chỉnh)`** nên được lựa chọn vì mang lại độ chính xác cao nhất (EER đạt mức tối ưu **1.33%**) cùng độ ổn định thu nhận dữ liệu tuyệt đối (FTA = 0).
 
 ## 8. Sự cố gặp phải và cách xử lý
 
 | Sự cố (thông báo lỗi) | Nguyên nhân | Cách xử lý |
 |---|---|---|
-| {hoặc ghi "Không có"} | | |
-
+| `ValueError: Confirm that opencv is installed on your environment! Expected path '...haarcascade_frontalface_default.xml' violated.` | Thư viện `opencv-python` phiên bản `5.0.0.93` vừa ra mắt đã thay đổi cấu trúc thư mục chứa dữ liệu `cv2/data`, khiến DeepFace không tìm thấy tệp mô hình Haar Cascade mặc định. | Hạ cấp phiên bản OpenCV về nhánh 4.x ổn định bằng hai lệnh: <br>`pip uninstall opencv-python -y`<br>`pip install "opencv-python<4.11"` |
+| Quá trình chạy bị dừng/treo lâu ở cấu hình `Facenet512 + retinaface` | Mạng RetinaFace tính toán đa tỷ lệ và định vị 5 điểm mốc (landmarks) rất nặng trên CPU (tốn $1.5 - 2.5$ giây/ảnh với 561 ảnh, tổng thời gian $\approx 15 - 20$ phút). Đồng thời, vô tình nhấp chuột vào terminal Windows bật chế độ QuickEdit làm tạm dừng tiến trình. | Nhấn phím `Enter` hoặc `Space` trên bàn phím để thoát chế độ QuickEdit nếu lỡ nhấp chuột; kiên nhẫn cắm sạc laptop để CPU chạy ở xung nhịp tối đa cho đến khi chương trình tính xong và xuất đệm `cache-embedding/`. |
 ## 9. Dữ liệu sinh trắc, nguồn tham khảo và công cụ AI
 
-- [ ] Kho không chứa ảnh vân tay, khuôn mặt, mống mắt, giọng nói của người thật, tập dữ liệu, tệp `.db`, `.pkl`, `.npy`, trọng số mô hình.
-- [ ] Mã dùng lại của người khác đã ghi nguồn ngay trong chú thích mã.
+- [x] Kho không chứa ảnh vân tay, khuôn mặt, mống mắt, giọng nói của người thật, tập dữ liệu, tệp `.db`, `.pkl`, `.npy`, trọng số mô hình.
+- [x] Mã dùng lại của người khác đã ghi nguồn ngay trong chú thích mã.
 
-Nguồn tham khảo: {tài liệu, trang web, kho mã, ngày truy cập}
+Nguồn tham khảo:
+- Kho mã nguồn mở DeepFace: https://github.com/serengil/deepface (Truy cập ngày 07/10/2026)
+- Tập dữ liệu LFW trên Scikit-learn: https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_lfw_pairs.html (Truy cập ngày 07/10/2026)
+- Giáo trình và tài liệu thực hành môn Bảo mật Sinh trắc (Mã HP: 04211), Trường Đại học Hùng Vương TP.HCM.
 
-Công cụ AI: {đã khai trong AI-SUDUNG.md, hoặc "Không dùng"}
+Công cụ AI: Google Gemini (đã khai chi tiết trong tệp `AI-SUDUNG.md`).
 
 ## 10. Cam kết
 
 Tôi cam kết các kết quả trong báo cáo này do chính tôi chạy trên máy của mình, các phần sử dụng lại của người khác đã được ghi nguồn đầy đủ.
 
-{Họ và tên, ngày}
+Võ Bá Huy, ngày 12 tháng 10 năm 2026
