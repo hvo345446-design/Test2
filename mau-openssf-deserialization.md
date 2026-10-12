@@ -16,7 +16,7 @@ Dán nội dung hai ô đã sửa, đúng như lúc trang báo `COMPLETE!`: dòn
 Chép nguyên dòng bắt đầu bằng `Completed` hiện dưới ba nút Hint, Reset, Give up. Dòng có đuôi `(GA)` vẫn được nhận.
 
 ```text
-[điền: dòng Completed ...]
+[Great work! All your answers are correct!]
 ```
 
 ## 3. Giải thích bằng tiếng Việt
