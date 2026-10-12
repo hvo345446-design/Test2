@@ -54,20 +54,17 @@ nhận xét. Kết quả chạy chép dạng văn bản trong khối ``` tốt h
 
 - **Việc đã làm:** Tạo môi trường ảo Python (`venv`), kích hoạt môi trường và tiến hành cài đặt các thư viện cần thiết như `deepface`, `scikit-learn`, `matplotlib`. Phát hiện sự cố phiên bản `opencv-python==5.0.0.93` gây lỗi đường dẫn tệp Haar Cascade trong DeepFace, xử lý bằng cách hạ cấp về `opencv-python<4.11`.
 - **Lệnh thực hiện:**
-  ```powershell
+```powershell
   python -m venv venv
   .\venv\Scripts\Activate.ps1
   pip uninstall opencv-python -y
   pip install "opencv-python<4.11" deepface scikit-learn matplotlib
-
 ```
 
 * **Minh chứng:**
 ```text
 Successfully installed Flask-3.1.3 Pillow-12.3.0 deepface-0.0.101 opencv-python-4.10.0.84 retina-face-0.0.18 scikit-learn-1.9.1 tensorflow-2.21.0
-
 ```
-
 
 * **Nhận xét:** Môi trường ảo được khởi tạo thành công, các thư viện tương thích hoàn toàn sau khi hạ cấp OpenCV về nhánh 4.x.
 
@@ -89,17 +86,13 @@ def load_lfw_pairs(n_pairs, seed=4211):
     idx_diff = rng.permutation(np.where(lfw.target == 0)[0])[: n_pairs // 2]
     idx = np.sort(np.r_[idx_same, idx_diff])
     return [(np.ascontiguousarray(pairs[i, 0]), np.ascontiguousarray(pairs[i, 1]), int(lfw.target[i])) for i in idx]
-
 ```
-
 
 * **Minh chứng:**
 ```text
 lfw.pairs.dtype: float32, min: 0.0000, max: 1.0000
 300 cặp, 561 ảnh phân biệt
-
 ```
-
 
 * **Nhận xét:** Dữ liệu ảnh LFW đã được định dạng chuẩn xác theo chuẩn BGR uint8 mà OpenCV và DeepFace yêu cầu, hạt giống `seed=4211` đảm bảo tính tái lập kết quả.
 
@@ -117,16 +110,12 @@ def cosine_distance(a, b):
     norm_b = np.linalg.norm(b)
     cos_sim = np.dot(a, b) / (norm_a * norm_b + 1e-12)
     return float(1.0 - np.clip(cos_sim, -1.0, 1.0))
-
 ```
-
 
 * **Minh chứng:**
 ```text
 verify cặp 0: nhãn thật 1, verified=True, distance=0.0938, threshold=0.3
-
 ```
-
 
 * **Nhận xét:** Hàm tính khoảng cách hoạt động chính xác, khớp với đầu ra kiểm tra thử của API `DeepFace.verify`.
 
@@ -154,7 +143,6 @@ python th04_verify.py --source lfw --n-pairs 300
 
 ```
 
-
 * **Nhận xét:** Đã đánh giá thành công đủ 7 cấu hình. Dữ liệu bảng kết quả và biểu đồ DET được khởi tạo chuẩn xác trong thư mục `lab04/ket-qua/`.
 
 ```
@@ -166,7 +154,33 @@ python th04_verify.py --source lfw --n-pairs 300
 <!-- Bảng và hình có số thứ tự và chú thích. Ghi công thức, ngưỡng, cỡ mẫu. Số liệu lấy từ tệp
 CSV trong ket-qua/ do chương trình ghi ra, không chép tay. -->
 
-{bảng và hình}
+### Bảng 1: Kết quả so sánh 7 cấu hình xác minh khuôn mặt 1:1 trên 300 cặp LFW (150 cặp cùng người, 150 cặp khác người)
+
+* **Cỡ mẫu đánh giá:** $N = 300$ cặp ảnh (gồm $150$ cặp Genus/Cùng người và $150$ cặp Impostor/Khác người, tổng cộng $561$ ảnh phân biệt).
+* **Độ đo khoảng cách:** Khoảng cách Cosine $d(a, b) = 1 - \frac{a \cdot b}{\Vert{}a\Vert{}_2 \Vert{}b\Vert{}_2 + 10^{-12}}$.
+* **Chỉ số:** EER (Equal Error Rate) - Tỷ lệ lỗi tại điểm FMR = FNMR; Ngưỡng EER - Giá trị ngưỡng Cosine tương ứng tại điểm EER; FTA (Failure to Acquire) - Số lượng ảnh không tìm thấy khuôn mặt.
+
+| Mô hình | Bộ phát hiện | Căn chỉnh | Số ảnh FTA | Số cặp bị bỏ | Số cặp cùng người | Số cặp khác người | EER (%) | Ngưỡng EER (cosin) | Thời gian 1 ảnh (s) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Facenet512 | opencv | Có | 17 | 18 | 143 | 139 | 9.22 | 0.6531 | *Đọc từ đệm* |
+| ArcFace | opencv | Có | 17 | 18 | 143 | 139 | 9.93 | 0.7890 | *Đọc từ đệm* |
+| SFace | opencv | Có | 17 | 18 | 143 | 139 | 13.12 | 0.7251 | *Đọc từ đệm* |
+| Facenet512 | retinaface | Có | 0 | 0 | 150 | 150 | 6.00 | 0.6491 | *Đọc từ đệm* |
+| Facenet512 | retinaface | Không | 0 | 0 | 150 | 150 | 1.33 | 0.5676 | *Đọc từ đệm* |
+| Facenet512 | mtcnn | Có | 0 | 0 | 150 | 150 | 2.67 | 0.5893 | 0.453 |
+| Facenet512 | skip | Không | 0 | 0 | 150 | 150 | 5.33 | 0.6257 | 0.298 |
+
+*(Ghi chú: Số liệu chi tiết được xuất tự động ra tệp `lab04/ket-qua/TH04_bang-cau-hinh.csv`)*
+
+---
+
+### Đồ thị DET (Decision Error Tradeoff)
+
+Đồ thị đường cong DET thể hiện mối quan hệ trao đổi giữa tỷ lệ nhận nhầm (FMR - False Match Rate) và tỷ lệ bỏ sót (FNMR - False Non-Match Rate) ở các mức ngưỡng phân ngưỡng khác nhau cho các cấu hình thực nghiệm:
+
+![Hình 1: Biểu đồ đường cong DET so sánh hiệu năng các cấu hình xác minh khuôn mặt trên tập LFW](ket-qua/TH04_det.png)
+
+*Hình 1: Đường cong DET đánh giá hiệu năng xác minh khuôn mặt trên tập LFW (đồ thị được lưu tại `lab04/ket-qua/TH04_det.png`).*
 
 ## 6. Phân tích và thảo luận
 
