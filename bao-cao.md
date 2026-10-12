@@ -183,7 +183,32 @@ CSV trong ket-qua/ do chương trình ghi ra, không chép tay. -->
 <!-- Trả lời từng câu hỏi phân tích của đề, đánh số theo đề. Mỗi nhận định: hiện tượng, cơ chế
 (dẫn tới hàm hoặc tham số), bằng chứng (dẫn tới bảng hoặc hình ở mục 5), giới hạn của kết luận. -->
 
-{phân tích}
+1. **So sánh 3 mô hình trích xuất đặc trưng (Facenet512 vs ArcFace vs SFace khi cùng dùng `opencv` + căn chỉnh):**
+   - **Hiện tượng:** Cùng sử dụng bộ phát hiện `opencv` và bật căn chỉnh (`align=True`), **Facenet512** đạt độ chính xác cao nhất với chỉ số **EER = 9.22%**, vượt trội hơn **ArcFace** (**EER = 9.93%**) và **SFace** (**EER = 13.12%**).
+   - **Cơ chế:** Facenet512 mã hóa khuôn mặt thành vector đặc trưng 512 chiều tối ưu hóa khoảng cách Euclide/Cosine thông qua hàm mất mát Triplet Loss trên không gian biểu diễn lớn, giúp phân biệt tốt biên khoảng cách giữa các lớp người dùng. SFace có kiến trúc mạng thu nhỏ để tối ưu tốc độ trích xuất nên khả năng phân tách ranh giới các cặp khó kém hơn.
+   - **Bằng chứng:** Bảng 1 (Mục 5) cho thấy ở cùng số cặp đánh giá ($143$ cặp cùng người, $139$ cặp khác người), Facenet512 có EER $9.22\%$ ở ngưỡng Cosine $0.6531$, so với ArcFace ($9.93\%$, ngưỡng $0.7890$) và SFace ($13.12\%$, ngưỡng $0.7251$).
+   - **Giới hạn kết luận:** So sánh này chỉ áp dụng khi đi kèm bộ phát hiện yếu `opencv` (có 17 ảnh bị FTA).
+
+2. **Ảnh hưởng của bộ phát hiện khuôn mặt (`opencv` vs `retinaface` vs `mtcnn` vs `skip` khi dùng Facenet512):**
+   - **Hiện tượng:** Bộ phát hiện `opencv` bị lỗi phát hiện cao làm giảm đáng kể số cặp đánh giá, trong khi `retinaface` và `mtcnn` đạt **FTA = 0**, đồng thời giúp giảm chỉ số EER xuống mức rất thấp.
+   - **Cơ chế:** `opencv` dựa trên thuật toán tầng Haar Cascade truyền thống nên rất dễ thất bại với các ảnh nghiêng góc, ánh sáng yếu hoặc độ tương phản kém trong LFW. Trong khi đó, `retinaface` và `mtcnn` là các mạng nơ-ron sâu chuyên dụng cho tác vụ định vị vùng mặt (face detection & alignment). Cấu hình `skip` lấy toàn bộ khung hình mà không cắt mặt.
+   - **Bằng chứng:** Bảng 1 ghi nhận `opencv` có **FTA = 17** ảnh (khiến $18$ cặp bị loại bỏ), EER là $9.22\%$. Ngược lại, `retinaface` và `mtcnn` có **FTA = 0**, giữ nguyên đủ $300$ cặp; EER giảm xuống còn $6.00\%$ (`retinaface` có align), $2.67\%$ (`mtcnn`) và $1.33\%$ (`retinaface` không align). Cấu hình `skip` đạt EER $5.33\%$ do ảnh LFW gốc vốn đã được căn giữa khuôn mặt tương đối chuẩn.
+   - **Giới hạn kết luận:** Việc `skip` đạt EER khá tốt ($5.33\%$) phụ thuộc vào đặc thụ của tập LFW (ảnh cropped sẵn). Với ảnh ngoài thực tế có nền phức tạp, `skip` sẽ cho tỷ lệ lỗi cao hơn nhiều.
+
+3. **Ảnh hưởng của bước căn chỉnh (`align=True` vs `align=False` với Facenet512 + retinaface):**
+   - **Hiện tượng:** Cấu hình không căn chỉnh (`align=False`) đạt chỉ số EER ấn tượng **1.33%**, tốt hơn đáng kể so với cấu hình có căn chỉnh (`align=True`) đạt **6.00%**.
+   - **Cơ chế:** Quá trình căn chỉnh (`align=True`) sử dụng phép biến đổi affine (xoay, co giãn, dịch chuyển) dựa trên 5 điểm mốc (landmarks). Do ảnh trong LFW có độ phân giải khá thấp ($250 \times 250$), phép biến đổi hình học cùng quá trình nội suy pixel làm nhòe nhẹ các chi tiết kết cấu vi mô (micro-texture) trên vùng mắt, mũi và miệng, khiến vector đặc trưng của Facenet512 bị biến dạng nhẹ.
+   - **Bằng chứng:** Bảng 1 chỉ ra `Facenet512 + retinaface (no align)` có EER chỉ **1.33%** (ngưỡng $0.5676$), trong khi `Facenet512 + retinaface (align)` có EER **6.00%** (ngưỡng $0.6491$). Đồ thị DET (Hình 1) cũng thể hiện đường cong của cấu hình không căn chỉnh nằm sát gốc tọa độ nhất.
+   - **Giới hạn kết luận:** Kết luận này đúng với dữ liệu LFW độ phân giải thấp. Với ảnh camera độ phân giải cao hoặc góc nghiêng lớn, căn chỉnh góc mặt vẫn là bước bắt buộc để duy trì độ chính xác.
+
+4. **Ý nghĩa thực tế của lỗi FTA (Failure to Acquire):**
+   - **Hiện tượng & Cơ chế:** Lỗi FTA xảy ra khi bộ phát hiện không thể trích xuất được khuôn mặt từ ảnh đầu vào.
+   - **Bằng chứng:** Bộ phát hiện `opencv` làm $17$ ảnh bị lỗi FTA, dẫn tới $18$ cặp xác thực ($6\%$ dữ liệu) không thể thực hiện so khớp.
+   - **Ý nghĩa:** Trong hệ thống thực tế (như kiểm soát ra vào hay ngân hàng số), FTA đồng nghĩa với việc người dùng bị từ chối dịch vụ ngay tại bước thu nhận ảnh. Để giảm FTA, hệ thống cần ứng dụng các bộ phát hiện Deep Learning mạnh (`retinaface`/`mtcnn`) và thiết kế giao diện hướng dẫn người dùng căn chỉnh khuôn mặt theo thời gian thực trước camera.
+
+5. **Phân tích đồ thị DET (`TH04_det.png`):**
+   - **Hiện tượng & Bằng chứng:** Trên Hình 1, đường cong DET của cấu hình `Facenet512 + retinaface (không căn chỉnh)` nằm ở vị trí thấp nhất và gần gốc tọa độ $(0,0)$ nhất.
+   - **Cơ chế:** Đồ thị DET biểu diễn sự đánh đổi giữa FMR (Tỷ lệ nhận nhầm) và FNMR (Tỷ lệ bỏ sót). Đường cong nằm càng gần gốc tọa độ chứng tỏ hệ thống duy trì được đồng thời cả FMR và FNMR ở mức rất thấp trên hầu hết mọi ngưỡng phân ngưỡng.
 
 ## 7. Ý nghĩa đối với bảo mật
 
