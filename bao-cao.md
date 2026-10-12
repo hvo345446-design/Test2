@@ -50,15 +50,6 @@ chưa làm được và lý do. -->
 <!-- Mỗi bước của đề một tiểu mục ###, gồm: việc đã làm, lệnh hoặc đoạn mã chính, minh chứng,
 nhận xét. Kết quả chạy chép dạng văn bản trong khối ``` tốt hơn ảnh chụp. -->
 
-### 4.1. {Bước 1}
-
-Dưới đây là nội dung mẫu cho **Mục 4: Các bước thực hiện và minh chứng** để bạn điền hoặc dán vào tệp `lab04/bao-cao.md`:
-
----
-
-```markdown
-## 4. Các bước thực hiện và minh chứng
-
 ### 4.1. Khởi tạo môi trường và cài đặt thư viện phụ thuộc
 
 - **Việc đã làm:** Tạo môi trường ảo Python (`venv`), kích hoạt môi trường và tiến hành cài đặt các thư viện cần thiết như `deepface`, `scikit-learn`, `matplotlib`. Phát hiện sự cố phiên bản `opencv-python==5.0.0.93` gây lỗi đường dẫn tệp Haar Cascade trong DeepFace, xử lý bằng cách hạ cấp về `opencv-python<4.11`.
