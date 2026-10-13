@@ -100,7 +100,7 @@ lfw.pairs.dtype: float32, min: 0.0000, max: 1.0000
 
 ### 4.3. Cài đặt hàm tính khoảng cách Cosine `cosine_distance`
 
-* **Việc đã làm:** Hoàn thiện hàm `cosine_distance` theo công thức khoảng cách Cosine: $d(a, b) = 1 - \frac{a \cdot b}{\Vert{}a\Vert{}_2 \Vert{}b\Vert{}_2 + 10^{-12}}$. Bổ sung đại lượng $\epsilon = 10^{-12}$ để chống lỗi chia cho 0 và ép miền giá trị độ tương đồng về $[-1.0, 1.0]$.
+* **Việc đã làm:** Hoàn thiện hàm `cosine_distance` theo công thức khoảng cách Cosine: $d(a, b) = 1 - \frac(a . b){\Vert{}a\Vert{}_2 \Vert{}b\Vert{}_2 + 1e-12}$. Bổ sung đại lượng $\epsilon = 1e-12$ để chống lỗi chia cho 0 và ép miền giá trị độ tương đồng về $[-1.0, 1.0]$.
 * **Mã nguồn chính (`th04_verify.py`):**
 ```python
 def cosine_distance(a, b):
@@ -153,7 +153,7 @@ CSV trong ket-qua/ do chương trình ghi ra, không chép tay. -->
 ### Bảng 1: Kết quả so sánh 7 cấu hình xác minh khuôn mặt 1:1 trên 300 cặp LFW (150 cặp cùng người, 150 cặp khác người)
 
 * **Cỡ mẫu đánh giá:** $N = 300$ cặp ảnh (gồm $150$ cặp Genus/Cùng người và $150$ cặp Impostor/Khác người, tổng cộng $561$ ảnh phân biệt).
-* **Độ đo khoảng cách:** Khoảng cách Cosine $d(a, b) = 1 - \frac{a \cdot b}{\Vert{}a\Vert{}_2 \Vert{}b\Vert{}_2 + 10^{-12}}$.
+* **Độ đo khoảng cách:** Khoảng cách Cosine d(a, b) = 1 - (a . b) / (||a|| * ||b|| + 1e-12).
 * **Chỉ số:** EER (Equal Error Rate) - Tỷ lệ lỗi tại điểm FMR = FNMR; Ngưỡng EER - Giá trị ngưỡng Cosine tương ứng tại điểm EER; FTA (Failure to Acquire) - Số lượng ảnh không tìm thấy khuôn mặt.
 
 | Mô hình | Bộ phát hiện | Căn chỉnh | Số ảnh FTA | Số cặp bị bỏ | Số cặp cùng người | Số cặp khác người | EER (%) | Ngưỡng EER (cosin) | Thời gian 1 ảnh (s) |
